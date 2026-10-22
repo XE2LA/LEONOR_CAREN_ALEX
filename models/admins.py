@@ -156,7 +156,12 @@ class Admin(Empleado):
                 INSERT INTO proyectos (id_proyecto, nombre_proyecto, descripcion, fecha_inicio)
                 VALUES (:1, :2, :3, TO_DATE(:4, 'YYYY-MM-DD'))
             """
-            db.cursor.execute(sql, (proj.id_proyecto, proj.nombre_proyecto, proj.descripcion, proj.fecha_inicio))
+            db.cursor.execute(sql, (
+                proj.get_id_proyecto(),
+                proj.get_nombre_proyecto(),
+                proj.get_descripcion(),
+                proj.get_fecha_inicio()
+            ))
             db.conexion.commit()
             print("Proyecto creado usando la clase proyecto.")
         except Exception as e:
@@ -192,7 +197,12 @@ class Admin(Empleado):
                 SET nombre_proyecto = :1, descripcion = :2, fecha_inicio = TO_DATE(:3, 'YYYY-MM-DD')
                 WHERE id_proyecto = :4
             """
-            db.cursor.execute(sql, (proj.nombre_proyecto, proj.descripcion, proj.fecha_inicio, proj.id_proyecto))
+            db.cursor.execute(sql, (
+                proj.get_nombre_proyecto(),
+                proj.get_descripcion(),
+                proj.get_fecha_inicio(),
+                proj.get_id_proyecto()
+            ))
             db.conexion.commit()
         except Exception as e:
             db.conexion.rollback()
@@ -226,7 +236,11 @@ class Admin(Empleado):
                 INSERT INTO departamentos (id_departamento, nombre_depa, gerente)
                 VALUES (:1, :2, :3)
             """
-            db.cursor.execute(sql, (depto.id_departamento, depto.nombre_depa, depto.gerente))
+            db.cursor.execute(sql, (
+                depto.get_id_departamento(),
+                depto.get_nombre_depa(),
+                depto.get_gerente()
+            ))
             db.conexion.commit()
             print("Departamento creado usando la clase Departamentos.")
         except Exception as e:
@@ -262,7 +276,11 @@ class Admin(Empleado):
                 SET nombre_depa = :1, gerente = :2
                 WHERE id_departamento = :3
             """
-            db.cursor.execute(sql, (depto.nombre_depa, depto.gerente, depto.id_departamento))
+            db.cursor.execute(sql, (
+                depto.get_nombre_depa(),
+                depto.get_gerente(),
+                depto.get_id_departamento()
+            ))
             db.conexion.commit()
         except Exception as e:
             db.conexion.rollback()

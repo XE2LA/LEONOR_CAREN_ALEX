@@ -2,6 +2,7 @@ from conexion import ConexionDB
 from models.usuarios import Usuarios
 from models.empleados import Empleado
 from models.admins import Admin
+from models.departamentos import Departamentos
 from models.proyectos import proyecto
 from models.r_tiempo import R_tiempo
 
@@ -117,7 +118,8 @@ def main():
                         print("1. Crear proyecto")
                         print("2. Eliminar proyecto")
                         print("3. Actualizar proyecto")
-                        accion = input("Seleccione una opción (1/2/3): ").strip()
+                        print("4. Ver proyectos")
+                        accion = input("Seleccione una opción (1/2/3/4): ").strip()
 
                         if accion == '1':
                             proyecto_nuevo = proyecto(
@@ -138,14 +140,23 @@ def main():
                                 input("Nueva fecha de inicio (YYYY-MM-DD): ")
                             )
                             empleado_obj.actualizar_proyecto(proyecto_actualizado)
+                        elif accion == '4':
+                            proyectos = empleado_obj.leer_proyecto()
+                            if proyectos:
+                                print("\nProyectos registrados:")
+                                for proyecto_actual in proyectos:
+                                    print(proyecto_actual)
+                            else:
+                                print("No hay proyectos registrados.")
                         else:
-                            print("Opción inválida. Seleccione 1, 2 o 3.")
+                            print("Opción inválida. Seleccione 1, 2, 3 o 4.")
                     elif opcion == '2':
                         print("\nGestión de departamentos:")
                         print("1. Crear departamento")
                         print("2. Eliminar departamento")
                         print("3. Actualizar departamento")
-                        accion = input("Seleccione una opción (1/2/3): ").strip()
+                        print("4. Ver departamentos")
+                        accion = input("Seleccione una opción (1/2/3/4): ").strip()
 
                         if accion == '1':
                             id_departamento = int(input("ID del departamento: "))
@@ -156,7 +167,9 @@ def main():
                             gerente = obtener_nombre_gerente(db.cursor, rut_gerente)
                             if gerente:
                                 empleado_obj.crear_departamento(
-                                    id_departamento, nombre_depa, gerente
+                                    Departamentos(
+                                        id_departamento, nombre_depa, gerente
+                                    )
                                 )
                             else:
                                 print(
@@ -182,16 +195,26 @@ def main():
                             )
                             if nuevo_gerente:
                                 empleado_obj.actualizar_departamento(
-                                    id_departamento,
-                                    nuevo_nombre_depa,
-                                    nuevo_gerente
+                                    Departamentos(
+                                        id_departamento,
+                                        nuevo_nombre_depa,
+                                        nuevo_gerente
+                                    )
                                 )
                             else:
                                 print(
                                     "No se encontró un administrador con ese RUT."
                                 )
+                        elif accion == '4':
+                            departamentos = empleado_obj.leer_departamento()
+                            if departamentos:
+                                print("\nDepartamentos registrados:")
+                                for departamento in departamentos:
+                                    print(departamento.obtenerDescripcion())
+                            else:
+                                print("No hay departamentos registrados.")
                         else:
-                            print("Opción inválida. Seleccione 1, 2 o 3.")
+                            print("Opción inválida. Seleccione 1, 2, 3 o 4.")
                     elif opcion == '3':
                         nuevo_privilegio = input(
                             "Ingrese el privilegio del nuevo usuario "
